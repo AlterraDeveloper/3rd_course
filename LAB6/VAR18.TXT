@@ -1,0 +1,4 @@
+Zadanie 1 Variant 18
+a =0.7;b =0.2;c =-2;m=1.5.
+Zadanie 2 Variant 18
+a =1.24;b =1;c =0.54;

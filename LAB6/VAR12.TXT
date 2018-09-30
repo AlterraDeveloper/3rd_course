@@ -1,0 +1,4 @@
+Zadanie 1 Variant 12
+a =0.6;b =0.3;c =-2;m=-1.
+Zadanie 2 Variant 12
+a =1.9;b =1;c =0.56;

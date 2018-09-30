@@ -1,0 +1,5 @@
+Zadanie 1 Variant 11
+a =0.6;b =0.3;c =-2;m=1.
+Zadanie 2 Variant 11
+a =2;b =1;c =0.56;
+

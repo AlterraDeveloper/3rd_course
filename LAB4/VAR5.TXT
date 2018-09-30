@@ -1,0 +1,7 @@
+Zadanie 1, Variant 5
+a1 =9; a2 =9; r3 = -1.75; r2 = 2.7146; r1 =6.2854;
+Zadanie 2, Variant 5
+a1 =-1;a2 =-1;r3 =2;r2 =-5;r1 =-8;
+Zadanie 3, Variant 5
+a1 =7;a2 =7;r3 =-2;r2 =-0.3117;r1 =4.8117
+

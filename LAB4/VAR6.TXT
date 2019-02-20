@@ -1,6 +1,0 @@
-Zadanie 1, Variant 6
-a1 =1; a2 = -1;r3 = -1.5; r2 = 3.0729; r1 = 6.4271;
-Zadanie 2, Variant 6
-a1 =-9;a2 =9;r3 =1.75;r2 =-3.5633;r1 =-8.4367;
-Zadanie 3, Variant 6
-a1 =9;a2 =9;r3 =-1.75;r2 =-1.5666;r1 =5.0666

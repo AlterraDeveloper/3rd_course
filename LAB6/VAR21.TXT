@@ -1,4 +1,0 @@
-Zadanie 1 Variant 21
-a =0.7;b =0.3;c =-2;m=1.5.
-Zadanie 2 Variant 21
-a =1.02;b =1;c =0.5;

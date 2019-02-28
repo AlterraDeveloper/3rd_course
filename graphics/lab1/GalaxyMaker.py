@@ -6,9 +6,6 @@ class Star():
         self.x = x
         self.y = y
     
-    # if __name__ = "__main__" : pass
-
-
 class GalaxyMaker():
 
     def __init__(self,width,height):
@@ -20,7 +17,7 @@ class GalaxyMaker():
         self._y_center = int(self.height/2)
 
         self._rukav_h = self.height
-        self._rukav_l = 25
+        self._rukav_l = width/10
         
     def _functional(self,d,r,galaxy_type):
         if galaxy_type == 0:
@@ -51,6 +48,7 @@ class GalaxyMaker():
                         self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))
                         new_x,new_y = self._rot(new_x,new_y,pi / arms)
                         self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))
+        return self.stars
 
 if __name__ == "__main__" : pass
         

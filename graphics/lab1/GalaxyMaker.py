@@ -23,21 +23,23 @@ class GalaxyMaker():
         self._rukav_l = width/10
         
     def _functional_for_mindal(self,x,y):
-        a , b = self.width/10 , self.height/5
+        a , b = self.width/4 , self.height/8
         p = (x-self._x_center)**2/a**2+(y-self._y_center)**2/b**2
-        return exp(-p**1.2)
+        return exp(-p**3)
 
     def make_mindal_galaxy(self):
         self.stars.clear()
         for x in range(self.width):
             for y in range(self.height):
                 if self._functional_for_mindal(x,y) >= random():
-                    self.stars.append(Star(x,y))
+                    ##self.stars.append(Star(x,y))
+                    new_x,new_y = self._rot(x,y,-pi/4)
+                    self.stars.append(Star(new_x+self._y_center,new_y-self._y_center/2))
         return self.stars
 
     def _functional_for_ellipse(self,x,y):
         point = Star(x,y)
-        return exp((-point.calculate_distance(self._x_center,self._y_center)**2.65)/self._rukav_h**2)
+        return exp((-point.calculate_distance(self._x_center,self._y_center)**2.8)/self._rukav_h**2)
     
     def make_ellipse_galaxy(self):
         self.stars.clear()
@@ -62,6 +64,7 @@ class GalaxyMaker():
         radius = min(self.width,self.height)
         radius = trunc(((radius**2+radius**2)**0.5)/2)
         b = 0.2 * alpha * pi * radius*2 #TODO bind value of slider to second arg
+        rotation_angle = pi / arms
         for x in range(-radius,radius):
             for y in range(-radius,radius):
                 if self._functional_for_spiral(x,y) >= random():
@@ -69,11 +72,9 @@ class GalaxyMaker():
                     if d != 0:
                         new_x,new_y = self._rot(x,y,b/d)
                         self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))
-        rotation_angle = 2*pi / arms
-        for star in self.stars:
-            for i in range(arms):
-                new_x,new_y = self._rot(x,y,rotation_angle*i)
-                self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))
+                        for i in range(arms):
+                            new_x,new_y = self._rot(new_x,new_y,rotation_angle*(i+1))
+                            self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))
         return self.stars
 
 if __name__ == "__main__" : pass

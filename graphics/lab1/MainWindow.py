@@ -1,7 +1,7 @@
 import math
 import tkinter as tk
 from tkinter.ttk import *
-from PIL import ImageTk,Image
+#from PIL import ImageTk,Image
 from GalaxyMaker import GalaxyMaker,Star
 
 class MainWindow(tk.Frame):
@@ -41,7 +41,7 @@ class MainWindow(tk.Frame):
         if self.galaxy_type.get() == 1:
             stars = GalaxyMaker(600,600).make_mindal_galaxy()        
         if self.galaxy_type.get() == 2:
-            stars = GalaxyMaker(600,600).make_spiral_galaxy(3,0)           
+            stars = GalaxyMaker(600,600).make_spiral_galaxy(3,-0.75)           
         for star in stars:
             distance_to_the_center = star.calculate_distance(self.canvas_center[0],self.canvas_center[1])
             color_string = self.calculate_color_of_star(distance_to_the_center)

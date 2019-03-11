@@ -1,5 +1,6 @@
 import math
 import tkinter as tk
+from tkinter import messagebox
 from tkinter.ttk import *
 from GalaxyMaker import GalaxyMaker,Star
 
@@ -40,7 +41,7 @@ class MainWindow(tk.Frame):
             
         self.slider_for_alpha = tk.Scale(self.master,variable = self.slider_alpha_value,from_=-3,to=3,resolution=0.2,orient = tk.HORIZONTAL,state = tk.DISABLED,label = 'Угол поворота')
         self.slider_for_alpha.grid(row = 4,column = 1)        
-        self.label_for_arms = tk.Label(self.master,text = 'Количество рукавов [1-4]',state = tk.DISABLED)
+        self.label_for_arms = tk.Label(self.master,text = 'Количество рукавов [1-5]',state = tk.DISABLED)
         self.label_for_arms.grid(row = 5,column = 0)        
         self.arms_entry = tk.Entry(self.master,state = tk.DISABLED)
         self.arms_entry.grid(row = 5,column = 1)
@@ -87,17 +88,35 @@ class MainWindow(tk.Frame):
         return '#' + r[r.index('x')+1:].zfill(2) + g[g.index('x')+1:].zfill(2) + b[b.index('x')+1:].zfill(2)
 ##        return '#' + r[r.index('x')+1:][0] + g[g.index('x')+1:][0] + b[b.index('x')+1:][0]
 
-##    def _validate_values(self,galaxy_type):
-        
+    def _validate_values(self,galaxy_type):
+        if galaxy_type == 1 :
+            try:
+                a = int(self.a_entry.get()) 
+                b = int(self.b_entry.get())
+                if a and b in range(1,21):
+                    return True
+                else : return False
+            except ValueError:
+                return False
+        if galaxy_type == 2:
+            try:
+                if int(self.arms_entry.get()) in range(1,6):
+                    return True
+                else : return False    
+            except ValueError:
+                return False
    
     def draw_stars(self):
         try:
             if self.galaxy_type.get() == 0:
                 stars = GalaxyMaker(600,600).make_ellipse_galaxy(self.slider_radius_value.get())   
-            if self.galaxy_type.get() == 1:
-                stars = GalaxyMaker(600,600).make_mindal_galaxy()        
-            if self.galaxy_type.get() == 2:
-                stars = GalaxyMaker(600,600).make_spiral_galaxy(2,self.slider_alpha_value.get())
+            elif self.galaxy_type.get() == 1 and self._validate_values(self.galaxy_type.get()):                
+                stars = GalaxyMaker(600,600).make_mindal_galaxy(int(self.a_entry.get()),int(self.b_entry.get()))        
+            elif self.galaxy_type.get() == 2 and self._validate_values(self.galaxy_type.get()):
+                stars = GalaxyMaker(600,600).make_spiral_galaxy(int(self.arms_entry.get()),self.slider_alpha_value.get())
+            else:
+                messagebox.showinfo('Error','Неверные данные')
+                return
         except(tk.TclError):
             return
         self.galaxy_area.delete('all')

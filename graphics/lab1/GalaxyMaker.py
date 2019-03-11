@@ -22,16 +22,16 @@ class GalaxyMaker():
         self._rukav_h = self.height
         self._rukav_l = width/10
         
-    def _functional_for_mindal(self,x,y):
-        a , b = self.width/4 , self.height/8
-        p = (x)**2/a**2+(y)**2/b**2
+    def _functional_for_mindal(self,x,y,a,b):
+        _a , _b = self.width/a , self.height/b
+        p = (x)**2/_a**2+(y)**2/_b**2
         return exp(-p**3)
 
-    def make_mindal_galaxy(self):
+    def make_mindal_galaxy(self,a,b):
         self.stars.clear()
         for x in range(int(-self.width/2),int(self.width/2)):
             for y in range(int(-self.height/2),int(self.height/2)):
-                if self._functional_for_mindal(x,y) >= random():
+                if self._functional_for_mindal(x,y,a,b) >= random():
                     new_x,new_y = self._rot(x,y,-pi/4)
                     self.stars.append(Star(new_x,new_y))
         return self.stars

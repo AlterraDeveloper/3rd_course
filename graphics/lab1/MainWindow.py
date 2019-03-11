@@ -19,7 +19,7 @@ class MainWindow(tk.Frame):
         self.radiobtn_ellipse_galaxy = tk.Radiobutton(self.master,text='Эллиптическая',value = 0,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
         self.radiobtn_ellipse_galaxy.grid(row = 0,column = 0)
         self.radiobtn_ellipse_galaxy.deselect()
-        self.slider_for_radius = tk.Scale(self.master,variable = self.slider_radius_value,from_=1,to=4,resolution=0.5,orient = tk.HORIZONTAL,state = tk.DISABLED,label = 'Радиус',highlightcolor = 'green')
+        self.slider_for_radius = tk.Scale(self.master,variable = self.slider_radius_value,from_=0.1,to=1,resolution=0.1,orient = tk.HORIZONTAL,state = tk.DISABLED,label = 'Радиус',highlightcolor = 'green')
         self.slider_for_radius.grid(row = 1, column = 1)
 
         self.radiobtn_mindal_galaxy = tk.Radiobutton(self.master,text='Миндалевидная',value = 1,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
@@ -79,24 +79,36 @@ class MainWindow(tk.Frame):
         
 
     def _calculate_color_of_star(self,distance):
-        r = hex((255+distance%255)%255) 
+##        r = hex((255+distance%255)%255)
+        r_value = int(int(self.galaxy_area['width'])/630*distance)%256
+        r = hex(r_value)
         g = hex(0) 
-        b = hex(255 - distance%255)
-        return '#' + r[r.index('x')+1:][0] + g[g.index('x')+1:][0] + b[b.index('x')+1:][0]
+        b = hex(255-r_value)
+        return '#' + r[r.index('x')+1:].zfill(2) + g[g.index('x')+1:].zfill(2) + b[b.index('x')+1:].zfill(2)
+##        return '#' + r[r.index('x')+1:][0] + g[g.index('x')+1:][0] + b[b.index('x')+1:][0]
 
+##    def _validate_values(self,galaxy_type):
+        
    
     def draw_stars(self):
+        try:
+            if self.galaxy_type.get() == 0:
+                stars = GalaxyMaker(600,600).make_ellipse_galaxy(self.slider_radius_value.get())   
+            if self.galaxy_type.get() == 1:
+                stars = GalaxyMaker(600,600).make_mindal_galaxy()        
+            if self.galaxy_type.get() == 2:
+                stars = GalaxyMaker(600,600).make_spiral_galaxy(2,self.slider_alpha_value.get())
+        except(tk.TclError):
+            return
         self.galaxy_area.delete('all')
-        if self.galaxy_type.get() == 0:
-            stars = GalaxyMaker(600,600).make_ellipse_galaxy()   
-        if self.galaxy_type.get() == 1:
-            stars = GalaxyMaker(600,600).make_mindal_galaxy()        
-        if self.galaxy_type.get() == 2:
-            stars = GalaxyMaker(600,600).make_spiral_galaxy(3,-0.75)           
+        center_x = int(self.galaxy_area['width'])/2
+        center_y = int(self.galaxy_area['height'])/2
         for star in stars:
             distance_to_the_center = star.calculate_distance(self.canvas_center[0],self.canvas_center[1])
             color_string = self._calculate_color_of_star(distance_to_the_center)
-            self.galaxy_area.create_line(star.x,star.y,star.x+1,star.y,fill=color_string)
+            star_new_x = star.x + center_x
+            star_new_y = star.y + center_y
+            self.galaxy_area.create_line(star_new_x,star_new_y,star_new_x+1,star_new_y,fill=color_string)
 
         
 if __name__ == "__main__":

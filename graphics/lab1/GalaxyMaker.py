@@ -7,7 +7,7 @@ class Star():
         self.y = y
     
     def calculate_distance(self,x,y):
-        return int(hypot(self.x - x,self.y-y))
+        return abs(int(hypot(self.x,self.y)))
     
 class GalaxyMaker():
 
@@ -24,27 +24,27 @@ class GalaxyMaker():
         
     def _functional_for_mindal(self,x,y):
         a , b = self.width/4 , self.height/8
-        p = (x-self._x_center)**2/a**2+(y-self._y_center)**2/b**2
+        p = (x)**2/a**2+(y)**2/b**2
         return exp(-p**3)
 
     def make_mindal_galaxy(self):
         self.stars.clear()
-        for x in range(self.width):
-            for y in range(self.height):
+        for x in range(int(-self.width/2),int(self.width/2)):
+            for y in range(int(-self.height/2),int(self.height/2)):
                 if self._functional_for_mindal(x,y) >= random():
                     new_x,new_y = self._rot(x,y,-pi/4)
-                    self.stars.append(Star(new_x+self._y_center,new_y-self._y_center/2))
+                    self.stars.append(Star(new_x,new_y))
         return self.stars
 
-    def _functional_for_ellipse(self,x,y):
+    def _functional_for_ellipse(self,x,y,ratio):
         point = Star(x,y)
-        return exp((-point.calculate_distance(self._x_center,self._y_center)**3)/self._rukav_h**2)
+        return exp((-point.calculate_distance(0,0)**2.75)/(self._rukav_h**2*ratio))
     
-    def make_ellipse_galaxy(self):
+    def make_ellipse_galaxy(self,ratio):
         self.stars.clear()
-        for x in range(self.width):
-            for y in range(self.height):
-                if self._functional_for_ellipse(x,y) >= random():
+        for x in range(int(-self.width/2),int(self.width/2)):
+            for y in range(int(-self.height/2),int(self.height/2)):
+                if self._functional_for_ellipse(x,y,ratio) >= random():
                     self.stars.append(Star(x,y))
         return self.stars
     
@@ -69,12 +69,13 @@ class GalaxyMaker():
                     d = (x*x + y*y)**0.5
                     if d != 0:
                         new_x,new_y = self._rot(x,y,b/d)
-                        self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))                            
+                        self.stars.append(Star(new_x,new_y))                            
         rotation_angle = pi / arms
-        for star in self.stars:
+        stars_copy = self.stars.copy()
+        for star in stars_copy:
             for i in range(1,arms):
                 new_x,new_y = self._rot(star.x,star.y,rotation_angle*i)
-                self.stars.append(Star(new_x+self._x_center,new_y+self._y_center))
+                self.stars.append(Star(new_x,new_y))
         return self.stars
 
 if __name__ == "__main__" : pass

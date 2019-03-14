@@ -3,72 +3,89 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.ttk import *
 from GalaxyMaker import GalaxyMaker,Star
+from EllipseGalaxy import EllipseGalaxy
+from MindalGalaxy import MindalGalaxy
+from SpiralGalaxy import SpiralGalaxy
+
+ELLIPSE_GALAXY_ID = 0
+MINDAL_GALAXY_ID = 1
+SPIRAL_GALAXY_ID = 2
 
 class MainWindow(tk.Frame):
     def __init__(self,master=None):
         super().__init__(master)
         self.master = master
-        # self.pack()
         self.galaxy_type = tk.IntVar()
         self.slider_alpha_value = tk.DoubleVar()
         self.slider_radius_value = tk.DoubleVar()
         self.create_widgets()
-        self.canvas_center = (300,300)
     
     def create_widgets(self):
 
-        self.radiobtn_ellipse_galaxy = tk.Radiobutton(self.master,text='Эллиптическая',value = 0,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
+        self.radiobtn_ellipse_galaxy = tk.Radiobutton(self.master,text='Эллиптическая',value =ELLIPSE_GALAXY_ID ,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
         self.radiobtn_ellipse_galaxy.grid(row = 0,column = 0)
         self.radiobtn_ellipse_galaxy.deselect()
-        self.slider_for_radius = tk.Scale(self.master,variable = self.slider_radius_value,from_=0.1,to=1,resolution=0.1,orient = tk.HORIZONTAL,state = tk.DISABLED,label = 'Радиус',highlightcolor = 'green')
-        self.slider_for_radius.grid(row = 1, column = 1)
-
-        self.radiobtn_mindal_galaxy = tk.Radiobutton(self.master,text='Миндалевидная',value = 1,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
+        self.slider_for_radius = tk.Scale(self.master,variable = self.slider_radius_value,from_=0.1,to=1,resolution=0.1,orient = tk.HORIZONTAL,state = tk.DISABLED,label = 'Радиус')
+        
+        self.radiobtn_mindal_galaxy = tk.Radiobutton(self.master,text='Миндалевидная',value = MINDAL_GALAXY_ID,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
         self.radiobtn_mindal_galaxy.grid(row = 0,column = 1)
         self.radiobtn_mindal_galaxy.deselect()
         self.label_for_a = tk.Label(self.master,text = 'A [1-20]',state = tk.DISABLED)
-        self.label_for_a.grid(row = 2,column = 0)
         self.label_for_b = tk.Label(self.master,text = 'B [1-20]',state = tk.DISABLED)
-        self.label_for_b.grid(row = 3,column = 0)
         self.a_entry = tk.Entry(self.master,state = tk.DISABLED)
-        self.a_entry.grid(row = 2,column = 1)
         self.b_entry = tk.Entry(self.master,state = tk.DISABLED)
-        self.b_entry.grid(row = 3,column = 1)
-
-        self.radiobtn_spiral_galaxy = tk.Radiobutton(self.master,text='Спиральная',value = 2,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
+        
+        self.radiobtn_spiral_galaxy = tk.Radiobutton(self.master,text='Спиральная',value = SPIRAL_GALAXY_ID,command = self.init_widgets_for_galaxies,variable = self.galaxy_type)
         self.radiobtn_spiral_galaxy.grid(row = 0,column = 2)
         self.radiobtn_spiral_galaxy.deselect()       
             
         self.slider_for_alpha = tk.Scale(self.master,variable = self.slider_alpha_value,from_=-3,to=3,resolution=0.2,orient = tk.HORIZONTAL,state = tk.DISABLED,label = 'Угол поворота')
-        self.slider_for_alpha.grid(row = 4,column = 1)        
         self.label_for_arms = tk.Label(self.master,text = 'Количество рукавов [1-5]',state = tk.DISABLED)
-        self.label_for_arms.grid(row = 5,column = 0)        
         self.arms_entry = tk.Entry(self.master,state = tk.DISABLED)
-        self.arms_entry.grid(row = 5,column = 1)
 
         self.show_button = tk.Button(self.master,text = 'Нарисовать галактику',command = self.draw_stars)
-        self.show_button.grid(row = 6,column = 0,columnspan = 3,pady = 10)
+        self.show_button.grid(row = 3,column = 0,columnspan = 3,pady = 10)
   
         self.galaxy_area = tk.Canvas(self.master,width = 600 ,height = 600,bg = 'black')
-        self.galaxy_area.grid(row = 7,columnspan = 3)    
+        self.galaxy_area.grid(row = 4,columnspan = 3)    
 
     def init_widgets_for_galaxies(self):
-        if self.galaxy_type.get() == 0:
-            self._reset_widgets()
+        if self.galaxy_type.get() == ELLIPSE_GALAXY_ID:
+            
+            self._disable_widgets()
+            self._hide_widgets()
+            
             self.slider_for_radius['state'] = tk.NORMAL
-        if self.galaxy_type.get() == 1:
-            self._reset_widgets()
+            self.slider_for_radius.grid(row = 1,column = 1)
+
+        if self.galaxy_type.get() == MINDAL_GALAXY_ID:
+            
+            self._disable_widgets()
+            self._hide_widgets()
+
             self.label_for_a['state'] = tk.NORMAL
             self.label_for_b['state'] = tk.NORMAL
             self.a_entry['state'] = tk.NORMAL
-            self.b_entry['state'] = tk.NORMAL          
-        if self.galaxy_type.get() == 2:
-            self._reset_widgets()
+            self.b_entry['state'] = tk.NORMAL
+
+            self.label_for_a.grid(row = 1,column = 0)
+            self.label_for_b.grid(row = 2,column = 0)
+            self.a_entry.grid(row = 1,column = 1)
+            self.b_entry.grid(row = 2,column = 1)
+
+        if self.galaxy_type.get() == SPIRAL_GALAXY_ID:
+
+            self._disable_widgets()
+            self._hide_widgets()
+            
             self.slider_for_alpha['state'] = tk.NORMAL
             self.label_for_arms['state'] = tk.NORMAL
             self.arms_entry['state'] = tk.NORMAL
 
-    def _reset_widgets(self):
+            self.slider_for_alpha.grid(row = 1,column = 1)
+            self.label_for_arms.grid(row = 2,column = 0)
+            self.arms_entry.grid(row = 2,column = 1)
+    def _disable_widgets(self):
         self.slider_for_radius['state'] = tk.DISABLED
         self.label_for_a['state'] = tk.DISABLED
         self.label_for_b['state'] = tk.DISABLED
@@ -77,62 +94,101 @@ class MainWindow(tk.Frame):
         self.slider_for_alpha['state'] = tk.DISABLED
         self.label_for_arms['state'] = tk.DISABLED
         self.arms_entry['state'] = tk.DISABLED
+
+    def _hide_widgets(self):
+        if self.galaxy_type.get() == ELLIPSE_GALAXY_ID:
+            # widgets for mindal galaxy 
+            self.label_for_a.grid_forget()
+            self.label_for_b.grid_forget()
+            self.a_entry.grid_forget()
+            self.b_entry.grid_forget()
+            ###########################
+
+            # widgets for spiral galaxy
+            self.slider_for_alpha.grid_forget()
+            self.label_for_arms.grid_forget()
+            self.arms_entry.grid_forget()
+            ###########################
+
+        if self.galaxy_type.get() == MINDAL_GALAXY_ID:
+            # widgets for ellipse galaxy 
+            self.slider_for_radius.grid_forget()
+            ###########################
+            self.slider_for_alpha.grid_forget()
+            self.label_for_arms.grid_forget()
+            self.arms_entry.grid_forget()
+
+        if self.galaxy_type.get() == SPIRAL_GALAXY_ID:
+            # widgets for ellipse galaxy
+            self.slider_for_radius.grid_forget()
+            ###########################
+
+            # widgets for mindal galaxy
+            self.label_for_a.grid_forget()
+            self.label_for_b.grid_forget()
+            self.a_entry.grid_forget()
+            self.b_entry.grid_remove()
+            ###########################
         
 
     def _calculate_color_of_star(self,distance):
-##        r = hex((255+distance%255)%255)
         r_value = int(int(self.galaxy_area['width'])/630*distance)%256
         r = hex(r_value)
         g = hex(0) 
         b = hex(255-r_value)
         return '#' + r[r.index('x')+1:].zfill(2) + g[g.index('x')+1:].zfill(2) + b[b.index('x')+1:].zfill(2)
-##        return '#' + r[r.index('x')+1:][0] + g[g.index('x')+1:][0] + b[b.index('x')+1:][0]
+
+    def _reset_widgets(self,*widgets):
+        if widgets:
+            for widget in widgets:
+                widget.delete(0,'end') 
 
     def _validate_values(self,galaxy_type):
-        if galaxy_type == 1 :
+        if galaxy_type == MINDAL_GALAXY_ID :
             try:
                 a = int(self.a_entry.get()) 
                 b = int(self.b_entry.get())
                 if a and b in range(1,21):
                     return True
                 else : return False
-            except ValueError:
-                return False
-        if galaxy_type == 2:
+            except ValueError:return False
+        if galaxy_type == SPIRAL_GALAXY_ID:
             try:
                 if int(self.arms_entry.get()) in range(1,6):
                     return True
                 else : return False    
-            except ValueError:
-                return False
+            except ValueError: return False
    
     def draw_stars(self):
+        canvas_width  = int(self.galaxy_area['width'])
+        canvas_height = int(self.galaxy_area['height'])
+        canvas_center_x = canvas_width/2
+        canvas_center_y = canvas_height/2
         try:
-            if self.galaxy_type.get() == 0:
-                stars = GalaxyMaker(600,600).make_ellipse_galaxy(self.slider_radius_value.get())   
-            elif self.galaxy_type.get() == 1 and self._validate_values(self.galaxy_type.get()):                
-                stars = GalaxyMaker(600,600).make_mindal_galaxy(int(self.a_entry.get()),int(self.b_entry.get()))        
-            elif self.galaxy_type.get() == 2 and self._validate_values(self.galaxy_type.get()):
-                stars = GalaxyMaker(600,600).make_spiral_galaxy(int(self.arms_entry.get()),self.slider_alpha_value.get())
+            if self.galaxy_type.get() == ELLIPSE_GALAXY_ID:
+                stars = EllipseGalaxy(canvas_width,canvas_height,self.slider_radius_value.get()).make()   
+            elif self.galaxy_type.get() == MINDAL_GALAXY_ID and self._validate_values(self.galaxy_type.get()):
+                stars = MindalGalaxy(canvas_width,canvas_height,int(self.a_entry.get()),int(self.b_entry.get())).make()                        
+            elif self.galaxy_type.get() == SPIRAL_GALAXY_ID and self._validate_values(self.galaxy_type.get()):
+                stars = SpiralGalaxy(canvas_width,canvas_height,int(self.arms_entry.get()),self.slider_alpha_value.get()).make()
             else:
                 messagebox.showinfo('Error','Неверные данные')
+                self._reset_widgets(self.arms_entry,self.a_entry,self.b_entry) 
                 return
         except(tk.TclError):
             return
         self.galaxy_area.delete('all')
-        center_x = int(self.galaxy_area['width'])/2
-        center_y = int(self.galaxy_area['height'])/2
         for star in stars:
-            distance_to_the_center = star.calculate_distance(self.canvas_center[0],self.canvas_center[1])
+            distance_to_the_center = star.calculate_distance(canvas_center_x,canvas_center_y)
             color_string = self._calculate_color_of_star(distance_to_the_center)
-            star_new_x = star.x + center_x
-            star_new_y = star.y + center_y
+            star_new_x = star.x + canvas_center_x
+            star_new_y = star.y + canvas_center_y
             self.galaxy_area.create_line(star_new_x,star_new_y,star_new_x+1,star_new_y,fill=color_string)
 
         
 if __name__ == "__main__":
     root = tk.Tk()
-    root.geometry("600x800+200+50")
+    root.geometry("600x700+200+50")
     root.title("Lab 1")
     root.resizable(False,False)
     app = MainWindow(master=root)

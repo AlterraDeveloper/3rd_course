@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Graphics and Links</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/table.css">
+</head>
+
+<body>
+    <div id="page-wrap">
+        <header>
+            <div id="menu-items">
+                <a href="./schedule.html">Расписание</a>
+                <a href="./clients.html">Клиенты</a>
+                <a href="./amenities.html">Услуги</a>
+                <a href="./payments.html">Оплаты</a>
+                <a href="./workers.html">Сотрудники</a>
+            </div>
+            <a href="login.html"><input type="button" value="Выйти" title="Выйти" id="logout-btn"></a>
+        </header>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Клиенты</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tbody class="labels">
+                    <tr>
+                        <td colspan="5">
+                            <label for="accounting">Хатха-йога 10:30 - 12:00</label>
+                            <input type="checkbox" name="accounting" id="accounting" data-toggle="toggle">
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="hide">
+                    <tr>
+                        <td>Иванова Инга</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                    </tr>
+                    <tr>
+                        <td>Смирнова Анна</td>
+                        <td>Да</td>
+                        <td>Нет</td>
+                        <td>Да</td>
+                        <td>Нет</td>
+                    </tr>
+                </tbody>
+                <tbody class="labels">
+                    <tr>
+                        <td colspan="5">
+                            <label for="management">Детская хореография 15:30 - 16:30</label>
+                            <input type="checkbox" name="management" id="management" data-toggle="toggle">
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="hide">
+                    <tr>
+                        <td>Макарова Ксения</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                    </tr>
+                    <tr>
+                        <td>Ульянова Даша</td>
+                        <td>Нет</td>
+                        <td>Нет</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                    </tr>
+                    <tr>
+                        <td>Кельдибекова Мээрим</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                        <td>Да</td>
+                    </tr>
+                    <tr>
+                        <td>Иванова Светлана</td>
+                        <td>Нет</td>
+                        <td>Нет</td>
+                        <td>Нет</td>
+                        <td>Нет</td>
+                    </tr>
+                </tbody>		
+            </tbody>
+        </table>
+    </div>
+
+
+    <footer>
+        <a href="mailto:theflash_2014@inbox.ru">Связаться с разработчиком</a>
+        <img src="./images/socnet-q.png" usemap="#image-map" alt="Social networks icons">
+        <map name="image-map">
+            <area target="_blank" alt="Facebook" title="Facebook" href="http://facebook.com" coords="0,0,25,24" shape="rect">
+            <area target="_blank" alt="Insta" title="Insta" href="http://instagram.com" coords="28,1,52,24" shape="rect">
+            <area target="_blank" alt="Twitter" title="Twitter" href="http://twitter.com" coords="14,38,13" shape="circle">
+        </map>
+    </footer>
+    <script src="./js/table.js"></script>
+</body>
+
+</html>

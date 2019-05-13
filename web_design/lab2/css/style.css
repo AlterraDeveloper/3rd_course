@@ -97,3 +97,16 @@ footer a{
 footer img{
     float: right;
 }
+
+#addClient-btn{
+    margin-left: 25px;
+}
+
+#addClient-btn div{
+    padding: 10px;
+}
+
+#addClient-btn img{
+    padding : 5px;
+    float: left;
+}

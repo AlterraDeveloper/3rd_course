@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,23 +7,79 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Graphics and Links</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/table.css">
 </head>
 
 <body>
-    <div class="header" id="header">
-        <a href="./index.html" class="menu-item">Главная</a>
-        <a href="./schedule.html" class="menu-item">Расписание</a>
-        <a href="./amenities.html" class="menu-item">Услуги</a>
-        <a href="./clients.html" class="menu-item">Клиенты</a>
-        <a href="./payments.html" class="menu-item">Оплаты</a>
-        <a href="./workers.html" class="menu-item">Сотрудники</a>
-    </div>
-    <div class="content" id="content">
+    <div id="page-wrap">
+        <header>
+            <div id="menu-items">
+                <a href="./index.html">Расписание</a>
+                <a href="./clients.html">Клиенты</a>
+                <a href="./amenities.html">Услуги</a>
+                <a href="./payments.html">Оплаты</a>
+                <a href="./workers.html">Сотрудники</a>
+            </div>
+            <a href="login.html"><input type="button" value="Выйти" title="Выйти" id="logout-btn"></a>
+        </header>
 
+        <div class="content" id="content">
+       <button type="submit" id="addClient-btn"><img src="./images/plus.png"><div>Добавить клиента</div></button>
+       
+       <input type="text" placeholder="Фамилия" id="clientLastName-input" class="input-field"/>
+       <input type="text" placeholder="Имя" id="clientFirstName-input" class="input-field"/>
+       <input type="text" placeholder="Отчество" id="clientMiddleName-input" class="input-field"/>
+
+       <table id="clientsTable">
+           <thead>
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>                    
+                </tr>
+            </thead>
+            <tbody id="clientsTable-body">                
+            </tbody>
+            
+       </table>
     </div>
     <div class="footer" id="footer">
 
     </div>
+    </div>
+   
+<style type="text/css">
+    .input-field{
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 28px;
+        color: #818181;
+        text-indent: 15px;
+        margin: 10px;
+        border: 2px solid #d4d2d2;
+        border-radius: 3px;
+        width: 370px;
+        height: 50px;
+        box-shadow: 1px 1px 1px 1px #a3a3a3;
+        outline: none;
+    }
+</style>
+
+<script type="text/javascript">
+    const addClientButton = document.querySelector("#addClient-btn");
+    const clientsTableBody = document.querySelector("#clientsTable-body");
+    addClientButton.addEventListener('click', e => {
+        const newRow = clientsTableBody.insertRow(-1);
+        const clientLastName = document.querySelector("#clientLastName-input");
+        const clientFirstName = document.querySelector("#clientFirstName-input");
+        const clientMiddleName = document.querySelector("#clientMiddleName-input");
+        newRow.innerHTML = `<tr> <td>${clientLastName.value}</td> <td>${clientFirstName.value}</td> <td>${clientMiddleName.value}</td> </tr>`;
+
+        clientLastName.value = '';
+        clientFirstName.value = '';
+        clientMiddleName.value = '';
+
+    })
+</script>
 </body>
 
 </html>

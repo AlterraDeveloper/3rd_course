@@ -65,4 +65,4 @@ join dbo.Сырье[s] on w.КодСырья = s.КодСырья
 join dbo.Типы_сырья[ts] on ts.КодТипаСырья = s.КодТипаСырья
 where ts.НаимТипаСырья = 'Напитки'
 and DATEPART(week,w.Датадвижения) % 2 = 0
-group by DATEPART(week,w.Датадвижения),wl.НаимСклада;P
+group by DATEPART(week,w.Датадвижения),wl.НаимСклада;

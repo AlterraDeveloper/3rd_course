@@ -86,17 +86,18 @@ RETURNS TABLE
 AS
 RETURN
 (
-SELECT 
+SELECT TOP (99.99999) PERCENT
 		z.КодЗаказа,
 		z.ДатаИсполнения,
-		t.Марка,
+		t.Марка, -- из за того что фигурирует это поле создал функцию ниже
 		SUM((zn.Количество*zn.Цена)*(1-zn.Скидка)) AS 'Стоимость товара с учетом скидки'
 	FROM dbo.Заказы AS z 
 	JOIN dbo.Заказано AS zn ON z.КодЗаказа = zn.КодЗаказа
 	JOIN dbo.Товары AS t ON zn.КодТовара = t.КодТовара
 	WHERE z.Клиент_ID = CONVERT(INT,@clientCode)
 		  AND z.ДатаИсполнения BETWEEN @startTime AND @endTime
-	GROUP BY z.КодЗаказа,z.ДатаИсполнения,t.Марка
+	GROUP BY ROLLUP(z.КодЗаказа,z.ДатаИсполнения,t.Марка)
+	ORDER BY z.КодЗаказа,z.ДатаИсполнения
 );
 GO
 DROP PROCEDURE IF EXISTS usp_GetClientOrders;
@@ -115,7 +116,8 @@ BEGIN
 		fn.ДатаИсполнения,
 		SUM(fn.[Стоимость товара с учетом скидки]) AS 'Стоимость заказа с учетом скидки'
 	FROM ufn_GetClientGoodsInOrders(@clientCode,@startTime,@endTime) AS fn
-	GROUP BY fn.КодЗаказа,fn.ДатаИсполнения;
+	GROUP BY fn.КодЗаказа,fn.ДатаИсполнения
+	;
 	SET @total = (SELECT SUM([Стоимость товара с учетом скидки]) FROM ufn_GetClientGoodsInOrders(@clientCode,@startTime,@endTime))
 END;
 GO

@@ -1,0 +1,44 @@
+CREATE DATABASE SPORT_ADMIN;
+
+USE SPORT_ADMIN;
+
+CREATE TABLE Services(
+	ServiceId INT PRIMARY KEY CLUSTERED IDENTITY(1,1),
+	ServiceName NVARCHAR(50) NOT NULL,
+	ServiceStartTime TIME NOT NULL,
+	ServiceEndTime TIME NOT NULL,
+	IsOnMonday BIT NOT NULL,
+	IsOnTuesday BIT NOT NULL,
+	IsOnWednesday BIT NOT NULL,
+	IsOnThursday BIT NOT NULL,
+	IsOnFriday BIT NOT NULL,
+	IsOnSaturday BIT NOT NULL,
+	Price INT NOT NULL,
+	Quantity TINYINT NOT NULL
+);
+
+CREATE TABLE Clients(
+	ClientId INT PRIMARY KEY CLUSTERED IDENTITY(1,1),
+	LastName NVARCHAR(50) NOT NULL,
+	FirstName NVARCHAR(50) NOT NULL,
+	MiddleName NVARCHAR(50),
+	Sex BIT NOT NULL,
+	MobilePhone NVARCHAR(50)
+);
+
+CREATE TABLE Abonements(
+	AbonementId INT PRIMARY KEY CLUSTERED IDENTITY(1,1),
+	ClientId INT NOT NULL REFERENCES Clients(ClientId),
+	ServiceId INT NOT NULL REFERENCES Services(ServiceId),
+	AbonementStartDate DATE NOT NULL,
+	AbonementEndDate DATE NOT NULL,
+	TrainingsRemain TINYINT NOT NULL,
+	IsActive BIT NOT NULL
+);
+
+CREATE TABLE Payments(
+	PaymentId INT PRIMARY KEY CLUSTERED IDENTITY(1,1),
+	Amount INT NOT NULL,
+	AbonementId INT NOT NULL REFERENCES Abonements(AbonementId),
+	DateOfPayment DATETIME NOT NULL
+);

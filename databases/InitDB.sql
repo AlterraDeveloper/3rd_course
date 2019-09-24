@@ -42,3 +42,45 @@ CREATE TABLE Payments(
 	AbonementId INT NOT NULL REFERENCES Abonements(AbonementId),
 	DateOfPayment DATETIME NOT NULL
 );
+
+GO
+CREATE PROCEDURE GymMargin @start_date date, @end_date date
+AS
+SELECT 
+	s.ServiceName,
+	sum(p.Amount)
+from Payments[p] 
+	inner join Abonements[a] ON a.AbonementId = p.AbonementId
+	inner join dbo.Services[s] ON s.ServiceId = a.ServiceId
+	where convert(date,p.DateOfPayment) >= @start_date and convert(date,p.DateOfPayment) <= @end_date 
+	group by s.ServiceName	
+GO
+
+CREATE PROCEDURE GetClientServices @client_id int,@start_date date, @end_date date
+AS
+SELECT 
+	c.LastName,
+	c.FirstName,
+	s.ServiceName,
+	count(a.AbonementId)
+FROM Abonements[a]
+inner join Services[s] ON a.ServiceId = s.ServiceId
+inner join Clients[c] ON c.ClientId = a.ClientId
+where a.ClientId = @client_id and convert(date,a.AbonementStartDate) >= @start_date and convert(date,a.AbonementStartDate) <= @end_date
+group by c.LastName,c.FirstName,s.ServiceName;
+GO
+
+CREATE PROCEDURE GetActiveAbonemets @start_date date, @end_date date
+AS
+SELECT 
+	c.LastName,
+	c.FirstName,
+	a.AbonementStartDate,
+	a.AbonementEndDate,
+	s.ServiceName
+FROM Abonements[a]
+	inner join Services[s] ON a.ServiceId = s.ServiceId
+	inner join Clients[c] ON c.ClientId = a.ClientId
+where convert(date,a.AbonementStartDate) >= @start_date and convert(date,a.AbonementStartDate) <= @end_date and a.IsActive = 1
+group by c.LastName,c.FirstName,s.ServiceName;
+GO
